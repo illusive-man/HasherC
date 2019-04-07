@@ -16,15 +16,10 @@ namespace HasherC
             string[] dirs = Directory.GetDirectories(rootDir, "*", SearchOption.AllDirectories);
             string[] files = Directory.GetFiles(rootDir, "*.*", SearchOption.AllDirectories);
 
-            foreach (string dir in dirs)
-            {
-                Console.WriteLine(dir);
-            }
-
             foreach (string file in files)
             {
                 var info = new FileInfo(file);
-                Console.WriteLine($"Name: { Path.GetFileNameWithoutExtension(file) }, size = {info.Length} bytes");
+                Console.WriteLine(value: $"Path: { Path.GetDirectoryName(file) },  Name: { Path.GetFileNameWithoutExtension(file) }, size = {info.Length} bytes");
             }
 
             Console.ReadKey();
