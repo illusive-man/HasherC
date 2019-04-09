@@ -19,7 +19,10 @@ namespace HasherC
             foreach (string file in files)
             {
                 FileInfo info = new FileInfo(file);
-                Console.WriteLine(value: $"Path: { Path.GetDirectoryName(file) },  Name: { Path.GetFileName(file) }, size = {info.Length} bytes");
+                Console.WriteLine(
+                    $"Path: { Path.GetDirectoryName(file) }," +
+                    $" Name: { Path.GetFileName(file) }, " +
+                    $" Size: { info.Length } bytes");
             }
 
             Console.ReadKey();
