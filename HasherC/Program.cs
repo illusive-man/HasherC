@@ -24,20 +24,10 @@ namespace HasherC
             Parser.Default.ParseArguments<Options>(args)
                    .WithParsed(o =>
                    {
-                       if (o.Verbose)
+                       if (o.Verbose || o.Check)
                        {
                            Console.WriteLine($"Verbose output enabled. Current Arguments: -v {o.Verbose} -c {o.Check} -p {o.Path}");
                            Console.WriteLine("Quick Start Example! App is in Verbose mode!");
-
-                       }
-                       else if (o.Check)
-                       {
-                           Console.WriteLine($"Checking Files. Current Arguments: -c {o.Check} -v {o.Verbose} -p {o.Path}");
-                           Console.WriteLine("App is in Check mode!");
-                       }
-                       else
-                       {
-                           Console.WriteLine($"Current Arguments: -v {o.Verbose} -c {o.Check} -p {o.Path}");
                        }
                    });
 
