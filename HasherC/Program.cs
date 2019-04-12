@@ -1,11 +1,13 @@
 ﻿using System;
 using CommandLine;
 using System.IO;
+using NLog;
 
 namespace HasherC
 {
     class Program
     {
+        
         public class Options
         {
             [Option('v', "verbose", Required = false, HelpText = "Set output to verbose messages.")]
@@ -17,7 +19,44 @@ namespace HasherC
             [Option('p', "path", Required = true, HelpText = "Enter the path.")]
             public string Path { get; set; }
         }
+    
+        public class MyClass
+        {
+            private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
+            public void MyMethod1()
+            {
+                logger.Trace("Sample trace message");
+                logger.Debug("Sample debug message");
+                logger.Info("Sample informational message");
+                logger.Warn("Sample warning message");
+                logger.Error("Sample error message");
+                logger.Fatal("Sample fatal error message");
+
+                // alternatively you can call the Log() method
+                // and pass log level as the parameter.
+                logger.Log(LogLevel.Info, "Sample informational message");
+
+
+                // Example of logging an exception
+                try
+                {
+
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "ow noos!"); // render the exception with ${exception}
+                    throw;
+                }
+
+
+            }
+        }
+
+    
         
+
+
         static void Main(string[] args)
         {
          
@@ -46,7 +85,11 @@ namespace HasherC
                   //  $" Size: { info.Length } bytes");
             }
             int test = 6 / 2 * (1 + 2);
+
             Console.WriteLine($"{ test }");
+
+            var etc = new HasherC.Program.MyClass();
+            etc.MyMethod1();
             Console.ReadKey();
         }
     }
