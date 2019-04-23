@@ -20,44 +20,14 @@ namespace HasherC
             public string Path { get; set; }
         }
     
-        public class MyClass
-        {
-            private static Logger logger = NLog.LogManager.GetCurrentClassLogger();
-
-            public void MyMethod1()
-            {
-                logger.Trace("Sample trace message");
-                logger.Debug("Sample debug message");
-                logger.Info("Sample informational message");
-                logger.Warn("Sample warning message");
-                logger.Error("Sample error message");
-                logger.Fatal("Sample fatal error message");
-
-                // alternatively you can call the Log() method
-                // and pass log level as the parameter.
-                logger.Log(LogLevel.Info, "Sample informational message");
-
-
-                // Example of logging an exception
-                try
-                {
-
-                }
-                catch (Exception ex)
-                {
-                    logger.Error(ex, "ow noos!"); // render the exception with ${exception}
-                    throw;
-                }
-
-
-            }
-        }
-
-   
+        
         static void Main(string[] args)
         {
-         
-            Parser.Default.ParseArguments<Options>(args)
+
+
+            Logger logger = LogManager.GetCurrentClassLogger();
+
+        Parser.Default.ParseArguments<Options>(args)
                    .WithParsed(o =>
                    {
                        if (o.Verbose || o.Check)
@@ -67,7 +37,7 @@ namespace HasherC
                        }
                    });
 
-
+            
             string rootDir = @"D:\CRC_TEST";
  
             string[] dirs = Directory.GetDirectories(rootDir, "*", SearchOption.AllDirectories);
@@ -84,29 +54,10 @@ namespace HasherC
             int test = ~256 + 1;
 
             Console.WriteLine($"{ test }");
-
-            var etc = new MyClass();
-            etc.MyMethod1();
-
-            try
-            {
-                var bbb = 79228162514264337593543950335M;
-                byte a = 0b11111101;
-                byte a1 = 253;
-                short b = 0b11111101;
-                Console.WriteLine($"Byte a: {a}; byte a1: {a1}; short a: { (sbyte)a}; short a1: {(sbyte)a1}");
-                //byte c = checked((decimal)(a + b));
-                //Console.WriteLine(c);
-                Console.WriteLine($"a={a}, b={b}");
-            }
-            catch (OverflowException ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
-            
+            logger.Log(LogLevel.Warn, "Sample informational message, called from other context");
 
             Console.ReadKey();
+
         }
     }
 }
