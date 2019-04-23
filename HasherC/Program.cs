@@ -22,7 +22,7 @@ namespace HasherC
     
         public class MyClass
         {
-            private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+            private static Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
             public void MyMethod1()
             {
@@ -53,10 +53,7 @@ namespace HasherC
             }
         }
 
-    
-        
-
-
+   
         static void Main(string[] args)
         {
          
@@ -84,12 +81,31 @@ namespace HasherC
                   //  $" Name: { Path.GetFileName(file) }, " +
                   //  $" Size: { info.Length } bytes");
             }
-            int test = 6 / 2 * (1 + 2);
+            int test = ~256 + 1;
 
             Console.WriteLine($"{ test }");
 
-            var etc = new HasherC.Program.MyClass();
+            var etc = new MyClass();
             etc.MyMethod1();
+
+            try
+            {
+                var bbb = 79228162514264337593543950335M;
+                byte a = 0b11111101;
+                byte a1 = 253;
+                short b = 0b11111101;
+                Console.WriteLine($"Byte a: {a}; byte a1: {a1}; short a: { (sbyte)a}; short a1: {(sbyte)a1}");
+                //byte c = checked((decimal)(a + b));
+                //Console.WriteLine(c);
+                Console.WriteLine($"a={a}, b={b}");
+            }
+            catch (OverflowException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            
+
             Console.ReadKey();
         }
     }
