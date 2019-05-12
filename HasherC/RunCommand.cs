@@ -3,39 +3,39 @@ using System.Diagnostics;
 
 namespace HasherC
 {
-    public class RunCommand
+    public static class RunCommand
     {
-        private static Process _process;
-
-        public RunCommand()
+        public static string Run(string hasherFileName, string arguments)
         {
-            var hasherFilename = @"d:\CRC\cpverify.exe";
             var process = new Process
             {
                 StartInfo =
                 {
-                    FileName = hasherFilename,
-                    Arguments = "-mk " + @"d:\CRC\dtcl.exe",
+                    FileName = hasherFileName,
+                    Arguments = arguments,
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
-                    RedirectStandardError = true
+                    RedirectStandardError = true,
+                    //StandardOutputEncoding = Encoding.GetEncoding(1251)
                 }
             };
-
+            
             process.ErrorDataReceived += OutputHandler;
             process.Start();
             process.BeginErrorReadLine();
             var output = process.StandardOutput.ReadToEnd();
-            Console.WriteLine(output);
-            //logger.Log(LogLevel.Info, $"Hash created: {output}");
             process.WaitForExit();
+            process.Close();
+
+            return output.Trim('\n');
         }
 
-        private static void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
+        private static void OutputHandler(object caller, DataReceivedEventArgs errors)
         {
-            //logger.Log(LogLevel.Info, $"Hash created: {outLine.Data}");
+            //Console.WriteLine(errors.Data);
+            //logger.Log(LogLevel.Info, $"Errors encountered: {errors.Data}");
         }
 
     }
-    
+
 }

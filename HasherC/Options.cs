@@ -7,7 +7,7 @@ namespace HasherC
         [Option('i', "isinst", Required = false, HelpText = "Specify if distribution is/has installer.")]
         public bool IsInst { get; set; }
 
-        [Option('d', "makedoc", Required = false, HelpText = "Specify if protocol documents have to be created.")]
+        [Option('d', "makedox", Required = false, HelpText = "Specify if protocol documents have to be created.")]
         public bool Makedox { get; set; }
 
         [Option('p', "path", Required = true, HelpText = "Enter the path to folder/image.")]

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("HasherC")]
-[assembly: AssemblyDescription("Batch create hashes for files and folders with different algorithms")]
+[assembly: AssemblyDescription("Wrapper to create hashes for files and folders with different algorithms")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("SKS")]
 [assembly: AssemblyProduct("HasherC")]
-[assembly: AssemblyCopyright("Copyright ©  2019")]
+[assembly: AssemblyCopyright("Copyright (c) 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.0.1.1")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("0.1.1.2")]
+[assembly: AssemblyFileVersion("1.0.0.2")]
