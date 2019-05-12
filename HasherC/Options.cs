@@ -4,13 +4,13 @@ namespace HasherC
 {
     public class Options
     {
-        [Option('i', "isinst", Required = false, HelpText = "Specify if distribution is/has installer.")]
-        public bool IsInst { get; set; }
-
-        [Option('d', "makedox", Required = false, HelpText = "Specify if protocol documents have to be created.")]
-        public bool Makedox { get; set; }
-
-        [Option('p', "path", Required = true, HelpText = "Enter the path to folder/image.")]
+        [Option('p', "path", Required = true, HelpText = "Path to a folder to process.")]
         public string Path { get; set; }
+
+        [Option('r', "report", Required = false, HelpText = "Path to a file to save the report to.")]
+        public string Report { get; set; }
+
+        [Option('x', "exclude", Required = false, HelpText = "Folder to exclude from processing.")]
+        public string Exclude { get; set; }
     }
 }
