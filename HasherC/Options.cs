@@ -4,7 +4,7 @@ namespace HasherC
 {
     public class Options
     {
-        [Option('p', "path", Required = true, HelpText = "Path to a folder to process.")]
+        [Option('p', "path", Required = true, HelpText = "Path to a folder to calculate file hashes for.")]
         public string Path { get; set; }
 
         [Option('r', "report", Required = false, HelpText = "Path to a file to save the report to.")]

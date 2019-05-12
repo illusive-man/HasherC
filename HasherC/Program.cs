@@ -49,8 +49,8 @@ namespace HasherC
             foreach (var file in files)
             {
                 if (_excludePath != null && Path.GetDirectoryName(file).StartsWith(_excludePath.TrimEnd(Path.DirectorySeparatorChar))) continue;
-                var currFile = $"-mk \"{file}\"";
-                var outData = RunCommand.Run(@".\cpverify.exe", currFile);
+                var currArgs = $"-mk \"{file}\"";
+                var outData = CpvCommand.GetHashes(@".\cpverify.exe", currArgs);
                 resultTable.Add(file, outData);
             }
             

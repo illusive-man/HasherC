@@ -2,9 +2,9 @@
 
 namespace HasherC
 {
-    public static class RunCommand
+    public static class CpvCommand
     {
-        public static string Run(string hasherFileName, string arguments)
+        public static string GetHashes(string hasherFileName, string arguments)
         {
             var process = new Process
             {
