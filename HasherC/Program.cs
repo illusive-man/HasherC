@@ -51,10 +51,10 @@ namespace HasherC
 
             foreach (var file in files)
             {
-                //PUT cpverify.exe in *.exe folder!!!
+                //Can I make cpverify.exe as Embedded Resource in exe file and call it from the code?
                 if (_excludePath != null &&
                     Path.GetDirectoryName(file)
-                        .StartsWith(_excludePath.TrimEnd(Path.DirectorySeparatorChar)))
+                        .Contains(_excludePath.TrimEnd(Path.DirectorySeparatorChar)))
                     continue;
                 var currArgs = $"-mk \"{ file }\"";
                 var outData = CpvCommand.GetHashes("cpverify.exe", currArgs);
@@ -81,8 +81,6 @@ namespace HasherC
             Console.WriteLine("\nAll files are processed. Check {0} file for report.\n", _reportPath);
             //logger.Log(LogLevel.Info, "Calculating hashes finished.");
 
-            
-            
             /*
              * TODO: Add parameter to point to cpverify.exe file
              * TODO: Add logging events solution-wide
