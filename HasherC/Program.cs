@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CommandLine;
 using System.IO;
+using System.Reflection;
 using NLog;
 // ReSharper disable All
 
@@ -15,7 +16,7 @@ namespace HasherC
 
         public static void Main(string[] args)
         {
-            var logger = LogManager.GetCurrentClassLogger();
+            //var logger = LogManager.GetCurrentClassLogger();
 
             Parser.Default.ParseArguments<Options>(args)
            .WithParsed(o =>
@@ -42,16 +43,21 @@ namespace HasherC
            })
            .WithNotParsed( o => { Environment.Exit(1); });
 
+          
+
             var files = Directory.GetFiles(_targetPath, "*.*", SearchOption.AllDirectories);
             var resultTable = new SortedDictionary<string, string>();
             var outList = new List<string>();
 
             foreach (var file in files)
             {
-                var trimmedPath = _excludePath.TrimEnd(Path.DirectorySeparatorChar);
-                if (_excludePath != null && Path.GetDirectoryName(file).StartsWith(trimmedPath)) continue;
+                //PUT cpverify.exe in *.exe folder!!!
+                if (_excludePath != null &&
+                    Path.GetDirectoryName(file)
+                        .StartsWith(_excludePath.TrimEnd(Path.DirectorySeparatorChar)))
+                    continue;
                 var currArgs = $"-mk \"{ file }\"";
-                var outData = CpvCommand.GetHashes(@".\cpverify.exe", currArgs);
+                var outData = CpvCommand.GetHashes("cpverify.exe", currArgs);
                 resultTable.Add(file, outData);
             }
             
@@ -73,9 +79,12 @@ namespace HasherC
             }
 
             Console.WriteLine("\nAll files are processed. Check {0} file for report.\n", _reportPath);
-            logger.Log(LogLevel.Info, "Calculating hashes finished.");
+            //logger.Log(LogLevel.Info, "Calculating hashes finished.");
+
+            
             
             /*
+             * TODO: Add parameter to point to cpverify.exe file
              * TODO: Add logging events solution-wide
              * TODO: Try to use only List (including sort testing)
              * TODO: Refactoring methods according hasher names
