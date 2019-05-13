@@ -15,7 +15,7 @@ namespace HasherC
 
         public static void Main(string[] args)
         {
-            //var logger = LogManager.GetCurrentClassLogger();
+            var logger = LogManager.GetCurrentClassLogger();
 
             Parser.Default.ParseArguments<Options>(args)
            .WithParsed(o =>
@@ -48,8 +48,9 @@ namespace HasherC
 
             foreach (var file in files)
             {
-                if (_excludePath != null && Path.GetDirectoryName(file).StartsWith(_excludePath.TrimEnd(Path.DirectorySeparatorChar))) continue;
-                var currArgs = $"-mk \"{file}\"";
+                var trimmedPath = _excludePath.TrimEnd(Path.DirectorySeparatorChar);
+                if (_excludePath != null && Path.GetDirectoryName(file).StartsWith(trimmedPath)) continue;
+                var currArgs = $"-mk \"{ file }\"";
                 var outData = CpvCommand.GetHashes(@".\cpverify.exe", currArgs);
                 resultTable.Add(file, outData);
             }
@@ -72,12 +73,12 @@ namespace HasherC
             }
 
             Console.WriteLine("\nAll files are processed. Check {0} file for report.\n", _reportPath);
-
+            logger.Log(LogLevel.Info, "Calculating hashes finished.");
+            
             /*
              * TODO: Add logging events solution-wide
              * TODO: Try to use only List (including sort testing)
              * TODO: Refactoring methods according hasher names
-             * logger.Log(LogLevel.Warn, "Sample informational message, called from other context");
              */
         }
     }
