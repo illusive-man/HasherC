@@ -32,7 +32,7 @@ namespace HasherC
                }
                else
                {
-                   _reportPath = _targetPath + @"\report.cpv";
+                   _reportPath = Path.Combine(_targetPath, @"report.cpv");
                }
 
                if (o.Exclude != null)
@@ -43,10 +43,7 @@ namespace HasherC
            })
            .WithNotParsed( o => { Environment.Exit(1); });
 
-          
-
             var files = Directory.GetFiles(_targetPath, "*.*", SearchOption.AllDirectories);
-            var resultTable = new SortedDictionary<string, string>();
             var outList = new List<string>();
 
             foreach (var file in files)
@@ -58,21 +55,17 @@ namespace HasherC
                     continue;
                 var currArgs = $"-mk \"{ file }\"";
                 var outData = CpvCommand.GetHashes("cpverify.exe", currArgs);
-                resultTable.Add(file, outData);
+                outList.Add($"{ file }\t{ outData }");
             }
             
-            foreach (var item in resultTable)
-            {
-                outList.Add( $"{ item.Key }\t{ item.Value }");
-            }
-
+            outList.Sort();
             Directory.CreateDirectory(Path.GetDirectoryName(_reportPath) ?? throw new InvalidOperationException());
 
             using (var file = new StreamWriter(_reportPath))
             {
                 foreach (var line in outList)
                 {
-                    var relPath = line.Replace(_targetPath, ".");
+                    var relPath = line.Replace(_targetPath, ".\\");
                     file.Write(relPath);
                     Console.WriteLine(relPath);
                 }
