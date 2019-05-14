@@ -55,7 +55,14 @@ namespace HasherC
                     continue;
                 var currArgs = $"-mk \"{ file }\"";
                 var outData = CpvCommand.GetHashes("cpverify.exe", currArgs);
-                outList.Add($"{ file }\t{ outData }");
+                if (!string.IsNullOrWhiteSpace(outData))
+                {
+                    outList.Add($"{file}\t{outData}");
+                }
+                else
+                {
+                    outList.Add($"{file}\t{new String('0', 64)}");
+                }
             }
             
             outList.Sort();
