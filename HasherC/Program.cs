@@ -22,7 +22,7 @@ namespace HasherC
            {
                if (o.Path != null)
                {
-                   _targetPath = o.Path;
+                   _targetPath = o.Path.TrimEnd(Path.DirectorySeparatorChar);
                }
 
                if (o.Report != null)
@@ -31,7 +31,7 @@ namespace HasherC
                }
                else
                {
-                   _reportPath = Path.Combine(_targetPath, "report.cpv");
+                   _reportPath = Path.Combine(_targetPath + Path.DirectorySeparatorChar ,"report.cpv");
                }
 
                if (o.Exclude != null)
@@ -71,7 +71,7 @@ namespace HasherC
             {
                 foreach (var line in outList)
                 {
-                    var relPath = line.Replace(_targetPath, ".\\");
+                    var relPath = line.Replace(_targetPath, ".");
                     file.Write(relPath);
                     Console.WriteLine(relPath);
                 }
