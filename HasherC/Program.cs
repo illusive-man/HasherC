@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using CommandLine;
 using System.IO;
-using System.Reflection;
-using NLog;
+
 // ReSharper disable All
 
 namespace HasherC
@@ -32,7 +31,7 @@ namespace HasherC
                }
                else
                {
-                   _reportPath = Path.Combine(_targetPath, @"report.cpv");
+                   _reportPath = Path.Combine(_targetPath, "report.cpv");
                }
 
                if (o.Exclude != null)
@@ -41,7 +40,7 @@ namespace HasherC
                }
 
            })
-           .WithNotParsed( o => { Environment.Exit(1); });
+           .WithNotParsed( errs => { Environment.Exit(1); });
 
             var files = Directory.GetFiles(_targetPath, "*.*", SearchOption.AllDirectories);
             var outList = new List<string>();
@@ -82,10 +81,8 @@ namespace HasherC
             //logger.Log(LogLevel.Info, "Calculating hashes finished.");
 
             /*
-             * TODO: Add parameter to point to cpverify.exe file
              * TODO: Add logging events solution-wide
-             * TODO: Try to use only List (including sort testing)
-             * TODO: Refactoring methods according hasher names
+             * TODO: Embed cpverify?
              */
         }
     }
