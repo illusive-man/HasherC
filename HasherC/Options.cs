@@ -7,7 +7,7 @@ namespace HasherC
         [Option('p', "path", Required = true, HelpText = "Path to a folder to calculate file hashes for.")]
         public string Path { get; set; }
 
-        [Option('r', "report", Required = false, HelpText = "Path to a file to save the report to.")]
+        [Option('r', "report", Required = false, HelpText = "Report path and filename without extension.")]
         public string Report { get; set; }
 
         [Option('x', "exclude", Required = false, HelpText = "Folder to exclude from processing.")]

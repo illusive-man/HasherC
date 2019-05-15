@@ -31,7 +31,7 @@ namespace HasherC
                }
                else
                {
-                   _reportPath = Path.Combine(_targetPath + Path.DirectorySeparatorChar ,"report.cpv");
+                   _reportPath = Path.Combine(_targetPath ,"report");
                }
 
                if (o.Exclude != null)
@@ -56,18 +56,19 @@ namespace HasherC
                 var outData = CpvCommand.GetHashes("cpverify.exe", currArgs);
                 if (!string.IsNullOrWhiteSpace(outData))
                 {
-                    outList.Add($"{file}\t{outData}");
+                    outList.Add($"{ file }\t{ outData }");
                 }
                 else
                 {
-                    outList.Add($"{file}\t{new String('0', 64)}");
+                    var filler = new String('0', 64);
+                    outList.Add($"{ file }\t{ filler }\r");
                 }
             }
             
             outList.Sort();
             Directory.CreateDirectory(Path.GetDirectoryName(_reportPath) ?? throw new InvalidOperationException());
 
-            using (var file = new StreamWriter(_reportPath))
+            using (var file = new StreamWriter(_reportPath + ".cpv"))
             {
                 foreach (var line in outList)
                 {
@@ -77,7 +78,19 @@ namespace HasherC
                 }
             }
 
-            Console.WriteLine("\nAll files are processed. Check {0} file for report.\n", _reportPath);
+            Console.WriteLine("\nStarting MAGMA hash calculations...\n");
+
+
+            var currArgs2 = $"-r \"{ _targetPath }\"";
+            var outData2 = CpvCommand.GetHashes("mgmce.exe", currArgs2);
+
+            using (var file = new StreamWriter(_reportPath + ".txt"))
+            {
+                file.Write(outData2);
+                Console.WriteLine(outData2);
+            }
+
+            Console.WriteLine("\nAll files processed.");
             //logger.Log(LogLevel.Info, "Calculating hashes finished.");
 
             /*
