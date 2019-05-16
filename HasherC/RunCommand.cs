@@ -2,7 +2,7 @@
 
 namespace HasherC
 {
-    public static class CpvCommand
+    public static class RunCommand
     {
         public static string GetHashes(string hasherFileName, string arguments)
         {
@@ -15,7 +15,6 @@ namespace HasherC
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
-                    //StandardOutputEncoding = Encoding.GetEncoding(1251)
                 }
             };
             
@@ -26,7 +25,7 @@ namespace HasherC
             process.WaitForExit();
             process.Close();
 
-            return output.Trim('\n');
+            return output;
         }
 
         private static void OutputHandler(object caller, DataReceivedEventArgs errors)
