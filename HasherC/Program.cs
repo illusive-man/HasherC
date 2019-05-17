@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CommandLine;
 using System.IO;
+using System.Linq;
 
 // ReSharper disable All
 
@@ -11,6 +12,7 @@ namespace HasherC
     {
         private static string _targetPath;
         private static string _reportPath;
+        private static bool _mirror = false;
 
         public static void Main(string[] args)
         {
@@ -32,29 +34,34 @@ namespace HasherC
                {
                    _reportPath = Path.Combine(_targetPath ,"report");
                }
+
+               _mirror = o.Mirror;
            })
            .WithNotParsed( errs => { Environment.Exit(1); });
 
-            var files = Directory.GetFiles(_targetPath, "*.*", SearchOption.AllDirectories);
+            var list = Directory.GetFiles(_targetPath, "*.*", SearchOption.AllDirectories);
+            var files = list.OrderBy(f => f);
             var outList = new List<string>();
+
+            Console.WriteLine($"\nStarting hash calculations on directory: {_targetPath}");
+            if(_mirror) Console.WriteLine("===== CPVERIFY =====");
 
             foreach (var file in files)
             {
                 //Can I make cpverify.exe as Embedded Resource in exe file and call it from the code?
                 var cpvArgs = $"-mk \"{ file }\"";
                 var outData = RunCommand.GetHashes("cpverify.exe", cpvArgs);
-                if (!string.IsNullOrWhiteSpace(outData))
+                if (string.IsNullOrEmpty(outData))
                 {
-                    outList.Add($"{ file }\t{ outData }");
+                    var filler = new string('0', 64);
+                    outList.Add($"{ file }\t{ filler }\n");
                 }
                 else
                 {
-                    var filler = new string('0', 64);
-                    outList.Add($"{ file }\t{ filler }\r");
+                    outList.Add($"{ file }\t{ outData }");
                 }
             }
             
-            //outList.Sort();
             Directory.CreateDirectory(Path.GetDirectoryName(_reportPath) ?? throw new InvalidOperationException());
 
             using (var file = new StreamWriter(_reportPath + ".cpv"))
@@ -63,11 +70,12 @@ namespace HasherC
                 {
                     var dataWithRelPath = line.Replace(_targetPath, ".");
                     file.Write(dataWithRelPath);
-                    Console.Write(dataWithRelPath);
+                    if(_mirror)
+                        Console.Write(dataWithRelPath);
                 }
             }
 
-            Console.WriteLine("\nStarting MAGMA hash calculations...\n");
+            if(_mirror) Console.WriteLine("====== MAGMA ======");
 
             var magmaArgs = $"-r \"{ _targetPath }\"";
             var outdataMagma = RunCommand.GetHashes("mgmce.exe", magmaArgs);
@@ -75,10 +83,12 @@ namespace HasherC
             using (var file = new StreamWriter(_reportPath + ".txt"))
             {
                 file.Write(outdataMagma);
-                Console.WriteLine(outdataMagma);
+                if(_mirror) Console.WriteLine(outdataMagma);
             }
 
-            Console.WriteLine("\nAll files processed.");
+            Console.WriteLine("Hash calculations were finished successfully!");
+            Console.WriteLine($"Reports created: (cpverify) -> {_reportPath}.cpv, (magmac) -> {_reportPath}.txt\n");
+            
             //logger.Log(LogLevel.Info, "Calculating hashes finished.");
         }
     }

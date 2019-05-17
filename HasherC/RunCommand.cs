@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace HasherC
 {
@@ -21,7 +22,9 @@ namespace HasherC
             process.ErrorDataReceived += OutputHandler;
             process.Start();
             process.BeginErrorReadLine();
+
             var output = process.StandardOutput.ReadToEnd();
+
             process.WaitForExit();
             process.Close();
 
