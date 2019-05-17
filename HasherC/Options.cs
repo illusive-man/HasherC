@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using CommandLine;
-using CommandLine.Text;
+﻿using CommandLine;
 
 namespace HasherC
 {

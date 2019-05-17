@@ -49,7 +49,7 @@ namespace HasherC
                 }
                 else
                 {
-                    var filler = new String('0', 64);
+                    var filler = new string('0', 64);
                     outList.Add($"{ file }\t{ filler }\r");
                 }
             }
@@ -80,11 +80,6 @@ namespace HasherC
 
             Console.WriteLine("\nAll files processed.");
             //logger.Log(LogLevel.Info, "Calculating hashes finished.");
-
-            /*
-             * TODO: Add logging events solution-wide
-             *
-             */
         }
     }
 }
