@@ -32,38 +32,50 @@ namespace HasherC
                }
                else
                {
-                   _reportPath = Path.Combine(_targetPath ,"report");
+                   _reportPath = Path.Combine(_targetPath, "report");
                }
 
                _mirror = o.Mirror;
            })
            .WithNotParsed( errs => { Environment.Exit(1); });
 
+            Directory.CreateDirectory(Path.GetDirectoryName(_reportPath) ?? throw new InvalidOperationException());
+
             var list = Directory.GetFiles(_targetPath, "*.*", SearchOption.AllDirectories);
             var files = list.OrderBy(f => f);
             var outList = new List<string>();
-
+            
             Console.WriteLine($"\nStarting hash calculations on directory: {_targetPath}");
-            if(_mirror) Console.WriteLine("===== CPVERIFY =====");
+            if(_mirror)
+                Console.WriteLine("===== CPVERIFY =====");
 
-            foreach (var file in files)
+            
+            using (var progress = new ProgressBar())
             {
-                //Can I make cpverify.exe as Embedded Resource in exe file and call it from the code?
-                var cpvArgs = $"-mk \"{ file }\"";
-                var outData = RunCommand.GetHashes("cpverify.exe", cpvArgs);
-                if (string.IsNullOrEmpty(outData))
+                var iteration = 0;
+                var step = 100 / files.Count() + 1;
+
+                foreach (var file in files)
                 {
-                    var filler = new string('0', 64);
-                    outList.Add($"{ file }\t{ filler }\n");
-                }
-                else
-                {
-                    outList.Add($"{ file }\t{ outData }");
+                   
+                    var cpvArgs = $"-mk \"{file}\"";
+                    var outData = RunCommand.GetHashes("cpverify.exe", cpvArgs);
+
+                    if (!string.IsNullOrEmpty(outData))
+                    {
+                        outList.Add($"{file}\t{outData}");
+                    }
+                    else
+                    {
+                        var filler = new string('0', 64);
+                        outList.Add($"{file}\t{filler}\n");
+                    }
+
+                    progress.Report((double) iteration/100) ;
+                    iteration += step;
                 }
             }
             
-            Directory.CreateDirectory(Path.GetDirectoryName(_reportPath) ?? throw new InvalidOperationException());
-
             using (var file = new StreamWriter(_reportPath + ".cpv"))
             {
                 foreach (var line in outList)
@@ -83,7 +95,8 @@ namespace HasherC
             using (var file = new StreamWriter(_reportPath + ".txt"))
             {
                 file.Write(outdataMagma);
-                if(_mirror) Console.WriteLine(outdataMagma);
+                if(_mirror)
+                    Console.WriteLine(outdataMagma);
             }
 
             Console.WriteLine("Hash calculations were finished successfully!");
