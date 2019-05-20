@@ -12,7 +12,7 @@ namespace HasherC
     {
         private static string _targetPath;
         private static string _reportPath;
-        private static bool _mirror = false;
+        private static bool _mirror;
 
         public static void Main(string[] args)
         {

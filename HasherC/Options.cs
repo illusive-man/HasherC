@@ -1,4 +1,6 @@
-﻿using CommandLine;
+﻿using System.Collections.Generic;
+using CommandLine;
+using CommandLine.Text;
 
 namespace HasherC
 {
@@ -12,5 +14,11 @@ namespace HasherC
 
         [Option('m', "mirror", Required = false, HelpText = "Mirror file output to stdout.")]
         public bool Mirror { get; set; }
+
+        [Usage(ApplicationAlias = "")]
+        public static IEnumerable<Example> Examples =>
+            new List<Example>() {
+                new Example("hasherc.exe <path> [options]", new Options {})
+            };
     }
 }
