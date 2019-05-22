@@ -1,9 +1,9 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using System.Windows.Input;
 
 namespace HasherC
 {
-    public static class RunCommand
+    public class RunCommand : IRunCommand
     {
         public static string GetHashes(string hasherFileName, string arguments)
         {
